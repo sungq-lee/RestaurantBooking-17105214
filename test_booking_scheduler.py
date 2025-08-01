@@ -158,9 +158,14 @@ def test_현재날짜가_일요일인_경우_예약불가_예외처리(mocker, c
         booking_scheduler.add_schedule(schedule)
 
 
-def test_현재날짜가_일요일이_아닌경우_예약가능(customer):
+def test_현재날짜가_일요일이_아닌경우_예약가능(mocker, customer):
     # arrange
-    booking_scheduler = TestableBookingScheduler(CAPACITY_PER_HOUR, "2021/06/03 17:00")
+    mocker_get_now = mocker.patch(
+        'booking_scheduler.BookingScheduler.get_now',
+        return_value=datetime.strptime("2021/06/03 17:00", "%Y/%m/%d %H:%M")
+    )
+
+    booking_scheduler = BookingScheduler(CAPACITY_PER_HOUR)
     schedule = Schedule(ON_THE_HOUR, UNDER_CAPACITY, customer)
 
     # act
