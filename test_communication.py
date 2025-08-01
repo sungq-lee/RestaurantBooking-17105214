@@ -22,5 +22,5 @@ class TestableMailSender(MailSender):
         self._send_mail_count += 1
 
     @property
-    def get_mail_count(self) -> int:
+    def send_mail_count(self) -> int:
         return self._send_mail_count
