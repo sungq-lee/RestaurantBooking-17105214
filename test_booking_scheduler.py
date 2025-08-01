@@ -2,7 +2,6 @@ import pytest
 
 from schedule import Customer, Schedule
 
-CUSTOMER = Customer("Fake name", "010-1234-5678")
 from communication import SmsSender, MailSender
 from booking_scheduler import BookingScheduler
 
@@ -10,13 +9,16 @@ from datetime import datetime
 
 NOT_ON_THE_HOUR = datetime.strptime("2021/03/26 09:05", "%Y/%m/%d %H:%M")
 ON_THE_HOUR = datetime.strptime("2021/03/26 09:00", "%Y/%m/%d %H:%M")
+CUSTOMER = Customer("Fake name", "010-1234-5678")
 
+CAPACITY_PER_HOUR = 3
+UNDER_CAPACITY = 1
 
 
 def test_예약은_정시에만_가능하다_정시가_아닌경우_예약불가():
     # arrange
-    schedule = Schedule(NOT_ON_THE_HOUR, 1, CUSTOMER)
-    booking_scheduler = BookingScheduler(3)
+    schedule = Schedule(NOT_ON_THE_HOUR, UNDER_CAPACITY, CUSTOMER)
+    booking_scheduler = BookingScheduler(CAPACITY_PER_HOUR)
 
     # act and assert
     with pytest.raises(ValueError):
@@ -26,7 +28,7 @@ def test_예약은_정시에만_가능하다_정시가_아닌경우_예약불가
 def test_예약은_정시에만_가능하다_정시인_경우_예약가능():
     # arrange
     schedule = Schedule(ON_THE_HOUR, 1, CUSTOMER)
-    booking_scheduler = BookingScheduler(3)
+    booking_scheduler = BookingScheduler(CAPACITY_PER_HOUR)
 
     # act
     booking_scheduler.add_schedule(schedule)
