@@ -31,6 +31,14 @@ def booking_scheduler_with_sms_mock():
     return booking_scheduler, testable_sms_sender
 
 
+@pytest.fixture
+def booking_scheduler_with_mail_mock():
+    booking_scheduler = BookingScheduler(CAPACITY_PER_HOUR)
+    testable_mail_sender = TestableMailSender()
+    booking_scheduler.set_mail_sender(testable_mail_sender)
+    return booking_scheduler, testable_mail_sender
+
+
 def test_예약은_정시에만_가능하다_정시가_아닌경우_예약불가(booking_scheduler):
     # arrange
     schedule = Schedule(NOT_ON_THE_HOUR, UNDER_CAPACITY, CUSTOMER)
