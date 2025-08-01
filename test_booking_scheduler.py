@@ -29,6 +29,20 @@ class TestableBookingScheduler(BookingScheduler):
 
 
 @pytest.fixture
+def customer(mocker):
+    customer = mocker.Mock()
+    customer.get_email.return_value = None
+    return customer
+
+
+@pytest.fixture
+def customer_with_mail(mocker):
+    customer = mocker.Mock()
+    customer.get_email.return_value = "test@test.com"
+    return customer
+
+
+@pytest.fixture
 def booking_scheduler():
     return BookingScheduler(CAPACITY_PER_HOUR)
 
