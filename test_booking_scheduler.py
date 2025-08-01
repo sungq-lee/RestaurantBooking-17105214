@@ -17,9 +17,16 @@ CAPACITY_PER_HOUR = 3
 UNDER_CAPACITY = 1
 
 
-@pytest.fixture()
+@pytest.fixture
 def booking_scheduler():
     return BookingScheduler(CAPACITY_PER_HOUR)
+
+@pytest.fixture
+def booking_scheduler_with_sms_mock():
+    booking_scheduler = BookingScheduler(CAPACITY_PER_HOUR)
+    testable_sms_sender = TestableSmsSender()
+    booking_scheduler.set_sms_sender(testable_sms_sender)
+    return booking_scheduler, testable_sms_sender
 
 
 def test_예약은_정시에만_가능하다_정시가_아닌경우_예약불가(booking_scheduler):
@@ -82,8 +89,6 @@ def test_예약완료시_SMS는_무조건_발송(booking_scheduler):
 
     # assert
     assert  testable_sms_sender.send_called
-
-    pass
 
 
 def test_이메일이_없는_경우에는_이메일_미발송():
