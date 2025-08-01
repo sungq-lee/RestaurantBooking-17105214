@@ -8,8 +8,6 @@ from booking_scheduler import BookingScheduler
 
 from datetime import datetime, timedelta
 
-from test_communication import TestableSmsSender, TestableMailSender
-
 NOT_ON_THE_HOUR = datetime.strptime("2021/03/26 09:05", "%Y/%m/%d %H:%M")
 ON_THE_HOUR = datetime.strptime("2021/03/26 09:00", "%Y/%m/%d %H:%M")
 
